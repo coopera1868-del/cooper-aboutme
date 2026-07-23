@@ -17,6 +17,7 @@
        - Colors are now sleek black and gold shades
        - Font is now OCR-A for that modern, futuristic feel
        - BLOG: Add articles in the ARTICLES array in the JavaScript section.
+       - CERTIFICATIONS: Add certificates in the CERTIFICATIONS array.
        ============================================================ -->
 
   <style>
@@ -77,7 +78,7 @@
       color: var(--accent);
       text-transform: uppercase;
     }
-    .nav-links { display: flex; gap: 12px; }
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
     .nav-links button {
       border: 1px solid var(--border); 
       background: transparent; 
@@ -293,6 +294,86 @@
       text-transform: uppercase;
       font-size: 0.9rem;
       letter-spacing: 0.02em;
+    }
+
+    /* ---------- Certification styles ---------- */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 24px 0;
+    }
+    .cert-card {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+    .cert-card:hover::before {
+      left: 100%;
+    }
+    .cert-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+      transform: translateY(-4px);
+    }
+    .cert-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .cert-issuer {
+      font-size: 0.95rem;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .cert-date {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .cert-card p {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+    .cert-card .cert-link {
+      display: inline-block;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .cert-card .cert-link:hover {
+      color: var(--accent-light);
+      transform: translateX(4px);
     }
 
     /* ---------- Blog styles ---------- */
@@ -521,6 +602,7 @@
       .page-head { padding: 40px 0 20px; }
       .page-head h1 { font-size: 1.8rem; }
       .skills { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      .cert-grid { grid-template-columns: 1fr; }
       #view-home {
         background-attachment: scroll;
       }
@@ -535,9 +617,11 @@
       .page-head { padding: 32px 0 16px; }
       .page-head h1 { font-size: 1.5rem; }
       .blog-card { padding: 20px; }
+      .cert-card { padding: 20px; }
       .modal-content { width: 95%; padding: 24px; }
       .modal h2 { font-size: 1.4rem; }
       .skills { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr; }
       #view-home {
         background-attachment: scroll;
       }
@@ -569,6 +653,7 @@
       <div class="nav-links">
         <button class="active" data-view="home">Home</button>
         <button data-view="about">About</button>
+        <button data-view="certifications">Certifications</button>
         <button data-view="blog">Blog</button>
         <button data-view="booking">Book</button>
       </div>
@@ -668,6 +753,25 @@
     </div>
   </div>
 
+  <!-- ============ CERTIFICATIONS VIEW ============ -->
+  <div class="view" id="view-certifications">
+    <div class="wrap">
+
+      <header>
+        <h1>Certifications</h1>
+        <div class="tagline">Professional Credentials</div>
+      </header>
+
+      <section style="border-top: none; padding-top: 0;">
+        <div id="certContainer" class="cert-grid"></div>
+      </section>
+
+      <footer>
+        &copy; <span id="year-cert"></span> COOPER ANDERSON
+      </footer>
+    </div>
+  </div>
+
   <!-- ============ BLOG VIEW ============ -->
   <div class="view" id="view-blog">
     <div class="wrap">
@@ -725,6 +829,37 @@
     const CALENDLY_URL = "https://calendly.com/coopera1868";
     
     /* ==========================================================
+       CERTIFICATIONS — Add your certifications here!
+       Replace title, issuer, date, description, and link.
+       ========================================================== */
+    const CERTIFICATIONS = [
+      {
+        id: 1,
+        title: "CompTIA A+",
+        issuer: "CompTIA",
+        date: "July 2026",
+        description: "Foundational certification in computer hardware, software, and IT support. Demonstrates core knowledge of PC hardware, networking, and troubleshooting.",
+        link: "https://www.comptia.org"
+      },
+      {
+        id: 2,
+        title: "HTML5, CSS3 & JavaScript Fundamentals",
+        issuer: "Codecademy",
+        date: "June 2026",
+        description: "Comprehensive training in web development fundamentals. Covers semantic HTML, modern CSS including flexbox and grid, and JavaScript core concepts.",
+        link: "https://www.codecademy.com"
+      },
+      {
+        id: 3,
+        title: "Salesforce CRM Fundamentals",
+        issuer: "Salesforce",
+        date: "May 2026",
+        description: "Practical training in Salesforce CRM platform administration and customization. Focused on customer relationship management best practices.",
+        link: "https://www.salesforce.com"
+      }
+    ];
+    
+    /* ==========================================================
        BLOG ARTICLES — Add your articles here!
        Replace title, date, category, excerpt, and content.
        Content supports HTML (paragraphs, links, etc).
@@ -737,10 +872,10 @@
         category: "Support",
         excerpt: "Learn the core principles that make the difference between good and great customer support interactions.",
         content: `
-          <p>Effective technical support isn't just about knowing the answer — it's about connecting with the person asking the question. Over the years, I've learned that a few core principles shape every meaningful support interaction.</p>
+          <p>Effective technical support isn't just about knowing the answer — it's about connecting with the person asking the question. Over the years, I've learned that a few core principles[...]
           
           <p><strong>1. Listen First, Solve Second</strong></p>
-          <p>Before you jump into troubleshooting, take time to understand what the customer is actually experiencing. Ask clarifying questions, listen to their workflow, and don't assume. Half the time, the real issue is something different from what was initially reported.</p>
+          <p>Before you jump into troubleshooting, take time to understand what the customer is actually experiencing. Ask clarifying questions, listen to their workflow, and don't assume. Half t[...]
           
           <p><strong>2. Explain, Don't Just Fix</strong></p>
           <p>When you resolve an issue, take a moment to explain what went wrong and why your solution works. This builds confidence and helps customers prevent similar issues in the future.</p>
@@ -752,7 +887,7 @@
           <p>Clear notes benefit the next person who touches this issue. Include what was tried, what worked, and any context that might help later. Future you will be grateful.</p>
           
           <p><strong>5. Show Genuine Care</strong></p>
-          <p>People can tell when you actually care about their problem versus when you're just going through the motions. That authenticity builds trust and turns frustrated customers into loyal ones.</p>
+          <p>People can tell when you actually care about their problem versus when you're just going through the motions. That authenticity builds trust and turns frustrated customers into loyal[...]
         `
       },
       {
@@ -762,19 +897,19 @@
         category: "Learning",
         excerpt: "A beginner's guide to the fundamentals of web development and why learning these skills is worth your time.",
         content: `
-          <p>I've recently completed foundational training in HTML5, CSS3, and JavaScript, and I want to share what I've learned about why these three technologies are the backbone of the web.</p>
+          <p>I've recently completed foundational training in HTML5, CSS3, and JavaScript, and I want to share what I've learned about why these three technologies are the backbone of the web.</p[...]
           
           <p><strong>HTML5: The Structure</strong></p>
-          <p>HTML is the skeleton of every web page. It defines what content exists and gives it semantic meaning. Learning semantic HTML — using <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;footer&gt;</code> instead of generic divs — makes your pages accessible and meaningful to both humans and machines.</p>
+          <p>HTML is the skeleton of every web page. It defines what content exists and gives it semantic meaning. Learning semantic HTML — using <code>&lt;header&gt;</code>, <code>&lt;nav&gt;<[...]
           
           <p><strong>CSS3: The Presentation</strong></p>
-          <p>CSS brings style and layout to HTML. Modern CSS is powerful: flexbox, grid, animations, and custom properties (variables) let you create beautiful, responsive interfaces. The key is understanding the cascade and specificity — once those click, you can build almost anything.</p>
+          <p>CSS brings style and layout to HTML. Modern CSS is powerful: flexbox, grid, animations, and custom properties (variables) let you create beautiful, responsive interfaces. The key is [...]
           
           <p><strong>JavaScript: The Behavior</strong></p>
-          <p>JavaScript is where static pages come alive. It lets you respond to user actions, update content dynamically, and build interactive experiences. Start with the basics: variables, functions, and the DOM (Document Object Model) — everything else builds from there.</p>
+          <p>JavaScript is where static pages come alive. It lets you respond to user actions, update content dynamically, and build interactive experiences. Start with the basics: variables, fun[...]
           
           <p><strong>Why Learn These?</strong></p>
-          <p>If you're curious about how websites work, or if you want to build something yourself, these three languages are the gateway. They're also incredibly relevant in my world of customer support — understanding how the products I support actually work makes me better at helping customers use them.</p>
+          <p>If you're curious about how websites work, or if you want to build something yourself, these three languages are the gateway. They're also incredibly relevant in my world of customer[...]
           
           <p>If you're just starting out, be patient with yourself. These skills compound over time. Build small projects, break things, fix them, and celebrate those "aha!" moments.</p>
         `
@@ -786,29 +921,30 @@
         category: "Support",
         excerpt: "How to bridge the gap between technical knowledge and customer understanding.",
         content: `
-          <p>One of the hardest parts of technical support is translating complex ideas into language that makes sense to people who didn't study the technology. It's not about dumbing things down — it's about meeting people where they are.</p>
+          <p>One of the hardest parts of technical support is translating complex ideas into language that makes sense to people who didn't study the technology. It's not about dumbing things dow[...]
           
           <p><strong>Avoid Jargon (Most of the Time)</strong></p>
-          <p>If you must use technical terms, explain them first: "Your system's IP address — think of it like a mailing address for your computer — is showing an error." This respects the customer's intelligence while ensuring clarity.</p>
+          <p>If you must use technical terms, explain them first: "Your system's IP address — think of it like a mailing address for your computer — is showing an error." This respects the cu[...]
           
           <p><strong>Use Analogies Wisely</strong></p>
-          <p>Analogies help, but they can also mislead if they're not precise. A bad analogy can create worse confusion. Test your analogies: "Is this comparison actually accurate?" If you're not sure, skip it.</p>
+          <p>Analogies help, but they can also mislead if they're not precise. A bad analogy can create worse confusion. Test your analogies: "Is this comparison actually accurate?" If you're not[...]
           
           <p><strong>Confirm Understanding</strong></p>
           <p>Don't assume they understood you. Ask: "Does that make sense?" or "Would you like me to walk through that again?" These questions also give you a chance to rephrase if needed.</p>
           
           <p><strong>Own Your Communication</strong></p>
-          <p>If a customer is confused, it's not always their fault. It might mean your explanation wasn't clear. Take responsibility, adjust your approach, and try again. This mindset transforms frustration into collaboration.</p>
+          <p>If a customer is confused, it's not always their fault. It might mean your explanation wasn't clear. Take responsibility, adjust your approach, and try again. This mindset transforms[...]
           
-          <p>Great support is as much about psychology and empathy as it is about technical knowledge. The best support specialists I've worked with all share this: they genuinely want the person on the other end to feel capable and understood.</p>
+          <p>Great support is as much about psychology and empathy as it is about technical knowledge. The best support specialists I've worked with all share this: they genuinely want the person[...]
         `
       }
     ];
     /* ========================================================== */
 
-    // Year stamp (applies to all views)
+    // Year stamps
     document.getElementById("year").textContent = new Date().getFullYear();
     document.getElementById("year-about").textContent = new Date().getFullYear();
+    document.getElementById("year-cert").textContent = new Date().getFullYear();
     document.getElementById("year-blog").textContent = new Date().getFullYear();
 
     /* ---------- Tab switching (no page reload) ---------- */
@@ -824,6 +960,20 @@
     navButtons.forEach(btn => {
       btn.addEventListener("click", () => showView(btn.dataset.view));
     });
+
+    /* ---------- Certification functionality ---------- */
+    function renderCertifications() {
+      const container = document.getElementById("certContainer");
+      container.innerHTML = CERTIFICATIONS.map(cert => `
+        <div class="cert-card">
+          <h3>${cert.title}</h3>
+          <div class="cert-issuer">${cert.issuer}</div>
+          <div class="cert-date">${cert.date}</div>
+          <p>${cert.description}</p>
+          <a href="${cert.link}" target="_blank" rel="noopener" class="cert-link">View Certificate →</a>
+        </div>
+      `).join("");
+    }
 
     /* ---------- Blog functionality ---------- */
     function renderBlogCards() {
@@ -864,6 +1014,7 @@
     });
 
     renderBlogCards();
+    renderCertifications();
 
     /* ---------- Calendly widget ---------- */
     const area = document.getElementById("bookingArea");
