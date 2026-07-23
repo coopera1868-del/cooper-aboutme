@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cooper Anderson � IT Customer Support Specialist</title>
+  <title>Cooper Anderson — IT Customer Support Specialist</title>
 
   <!-- ============================================================
        EASY-EDIT GUIDE
@@ -12,6 +12,7 @@
          folder, OR change the src="..." in the <img> tag.
        - Your Calendly link lives in CALENDLY_URL near the bottom.
        - Colors and fonts live in the :root block right below.
+       - BLOG: Add articles in the ARTICLES array in the JavaScript section.
        ============================================================ -->
 
   <style>
@@ -148,6 +149,146 @@
       min-width: 78px; display: inline-block;
     }
 
+    /* ---------- Blog styles ---------- */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin: 24px 0;
+    }
+    .blog-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .blog-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(47, 111, 159, 0.08);
+    }
+    .blog-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .blog-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .blog-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .blog-card p {
+      color: var(--text);
+      margin-bottom: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .blog-card .read-more {
+      display: inline-block;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    .blog-card .read-more:hover {
+      color: var(--text);
+    }
+
+    /* Blog modal for full article */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 20;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      animation: fadeIn 0.2s;
+    }
+    .modal.show { display: flex; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background-color: var(--bg);
+      margin: auto;
+      padding: 40px;
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s;
+    }
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    .modal-close {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal h2 {
+      clear: both;
+      margin-top: 0;
+      font-size: 1.9rem;
+      text-transform: none;
+      letter-spacing: normal;
+      margin-bottom: 12px;
+    }
+    .modal .blog-meta {
+      margin-bottom: 28px;
+    }
+    .modal-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .modal-body p {
+      margin-bottom: 16px;
+    }
+    .modal-body p:last-child {
+      margin-bottom: 0;
+    }
+    .modal-body a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .modal-body a:hover {
+      text-decoration: underline;
+    }
+
     /* ---------- Booking page ---------- */
     .page-head { text-align: center; padding: 56px 0 24px; }
     .page-head h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; }
@@ -174,9 +315,12 @@
       header { padding: 48px 0 32px; }
       h1 { font-size: 1.8rem; }
       .nav-inner { padding: 12px 18px; }
-      .nav-links button { padding: 8px 10px; }
+      .nav-links button { padding: 8px 10px; font-size: 0.9rem; }
       .page-head { padding: 40px 0 20px; }
       .page-head h1 { font-size: 1.7rem; }
+      .blog-card { padding: 20px; }
+      .modal-content { width: 95%; padding: 24px; }
+      .modal h2 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -189,6 +333,7 @@
       <span class="brand">Cooper Anderson</span>
       <div class="nav-links">
         <button class="active" data-view="home">Home</button>
+        <button data-view="blog">Blog</button>
         <button data-view="booking">Book a Time</button>
       </div>
     </div>
@@ -219,7 +364,7 @@
         </p>
         <p>
           I care about people leaving an interaction feeling more capable than when they
-          started � not just fixed, but understood. Whether I'm demonstrating a product,
+          started — not just fixed, but understood. Whether I'm demonstrating a product,
           troubleshooting an integration, or coaching a teammate, I aim for patience,
           clarity, and follow-through all the way to resolution.
         </p>
@@ -273,13 +418,42 @@
     </div>
   </div>
 
+  <!-- ============ BLOG VIEW ============ -->
+  <div class="view" id="view-blog">
+    <div class="wrap">
+
+      <header>
+        <h1>Blog</h1>
+        <div class="tagline">Thoughts on tech, support, and problem-solving</div>
+      </header>
+
+      <section style="border-top: none; padding-top: 0;">
+        <div id="blogContainer" class="blog-grid"></div>
+      </section>
+
+      <footer>
+        &copy; <span id="year-blog"></span> Cooper Anderson
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============ BLOG MODAL (for full articles) ============ -->
+  <div id="blogModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <h2 id="modalTitle"></h2>
+      <div class="blog-meta" id="modalMeta"></div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
   <!-- ============ BOOKING VIEW ============ -->
   <div class="view" id="view-booking">
     <div class="wrap">
 
       <div class="page-head">
         <h1>Book a Time With Me</h1>
-        <p>Pick a day and time that works for you � you'll get an instant confirmation.</p>
+        <p>Pick a day and time that works for you — you'll get an instant confirmation.</p>
       </div>
 
       <div class="booking">
@@ -295,14 +469,96 @@
 
   <script>
     /* ==========================================================
-       CONFIG � your Calendly link. Already wired up.
+       CONFIG — your Calendly link. Already wired up.
        To change it later, just paste a new link between the quotes.
        ========================================================== */
     const CALENDLY_URL = "https://calendly.com/coopera1868";
+    
+    /* ==========================================================
+       BLOG ARTICLES — Add your articles here!
+       Replace title, date, category, excerpt, and content.
+       Content supports HTML (paragraphs, links, etc).
+       ========================================================== */
+    const ARTICLES = [
+      {
+        id: 1,
+        title: "5 Essential Tips for Technical Customer Support",
+        date: "July 22, 2026",
+        category: "Support",
+        excerpt: "Learn the core principles that make the difference between good and great customer support interactions.",
+        content: `
+          <p>Effective technical support isn't just about knowing the answer — it's about connecting with the person asking the question. Over the years, I've learned that a few core principles shape every meaningful support interaction.</p>
+          
+          <p><strong>1. Listen First, Solve Second</strong></p>
+          <p>Before you jump into troubleshooting, take time to understand what the customer is actually experiencing. Ask clarifying questions, listen to their workflow, and don't assume. Half the time, the real issue is something different from what was initially reported.</p>
+          
+          <p><strong>2. Explain, Don't Just Fix</strong></p>
+          <p>When you resolve an issue, take a moment to explain what went wrong and why your solution works. This builds confidence and helps customers prevent similar issues in the future.</p>
+          
+          <p><strong>3. Follow Through</strong></p>
+          <p>Confirm that your solution actually solved the problem. A "quick fix" that creates another issue later isn't really a fix. Patience and thoroughness always win.</p>
+          
+          <p><strong>4. Document Everything</strong></p>
+          <p>Clear notes benefit the next person who touches this issue. Include what was tried, what worked, and any context that might help later. Future you will be grateful.</p>
+          
+          <p><strong>5. Show Genuine Care</strong></p>
+          <p>People can tell when you actually care about their problem versus when you're just going through the motions. That authenticity builds trust and turns frustrated customers into loyal ones.</p>
+        `
+      },
+      {
+        id: 2,
+        title: "Getting Started with HTML5, CSS3, and JavaScript",
+        date: "July 15, 2026",
+        category: "Learning",
+        excerpt: "A beginner's guide to the fundamentals of web development and why learning these skills is worth your time.",
+        content: `
+          <p>I've recently completed foundational training in HTML5, CSS3, and JavaScript, and I want to share what I've learned about why these three technologies are the backbone of the web.</p>
+          
+          <p><strong>HTML5: The Structure</strong></p>
+          <p>HTML is the skeleton of every web page. It defines what content exists and gives it semantic meaning. Learning semantic HTML — using <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;footer&gt;</code> instead of generic divs — makes your pages accessible and meaningful to both humans and machines.</p>
+          
+          <p><strong>CSS3: The Presentation</strong></p>
+          <p>CSS brings style and layout to HTML. Modern CSS is powerful: flexbox, grid, animations, and custom properties (variables) let you create beautiful, responsive interfaces. The key is understanding the cascade and specificity — once those click, you can build almost anything.</p>
+          
+          <p><strong>JavaScript: The Behavior</strong></p>
+          <p>JavaScript is where static pages come alive. It lets you respond to user actions, update content dynamically, and build interactive experiences. Start with the basics: variables, functions, and the DOM (Document Object Model) — everything else builds from there.</p>
+          
+          <p><strong>Why Learn These?</strong></p>
+          <p>If you're curious about how websites work, or if you want to build something yourself, these three languages are the gateway. They're also incredibly relevant in my world of customer support — understanding how the products I support actually work makes me better at helping customers use them.</p>
+          
+          <p>If you're just starting out, be patient with yourself. These skills compound over time. Build small projects, break things, fix them, and celebrate those "aha!" moments.</p>
+        `
+      },
+      {
+        id: 3,
+        title: "The Psychology of Clear Communication in Technical Support",
+        date: "July 8, 2026",
+        category: "Support",
+        excerpt: "How to bridge the gap between technical knowledge and customer understanding.",
+        content: `
+          <p>One of the hardest parts of technical support is translating complex ideas into language that makes sense to people who didn't study the technology. It's not about dumbing things down — it's about meeting people where they are.</p>
+          
+          <p><strong>Avoid Jargon (Most of the Time)</strong></p>
+          <p>If you must use technical terms, explain them first: "Your system's IP address — think of it like a mailing address for your computer — is showing an error." This respects the customer's intelligence while ensuring clarity.</p>
+          
+          <p><strong>Use Analogies Wisely</strong></p>
+          <p>Analogies help, but they can also mislead if they're not precise. A bad analogy can create worse confusion. Test your analogies: "Is this comparison actually accurate?" If you're not sure, skip it.</p>
+          
+          <p><strong>Confirm Understanding</strong></p>
+          <p>Don't assume they understood you. Ask: "Does that make sense?" or "Would you like me to walk through that again?" These questions also give you a chance to rephrase if needed.</p>
+          
+          <p><strong>Own Your Communication</strong></p>
+          <p>If a customer is confused, it's not always their fault. It might mean your explanation wasn't clear. Take responsibility, adjust your approach, and try again. This mindset transforms frustration into collaboration.</p>
+          
+          <p>Great support is as much about psychology and empathy as it is about technical knowledge. The best support specialists I've worked with all share this: they genuinely want the person on the other end to feel capable and understood.</p>
+        `
+      }
+    ];
     /* ========================================================== */
 
     // Year stamp (applies to both views)
     document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year-blog").textContent = new Date().getFullYear();
 
     /* ---------- Tab switching (no page reload) ---------- */
     const navButtons = document.querySelectorAll(".nav-links button");
@@ -317,6 +573,46 @@
     navButtons.forEach(btn => {
       btn.addEventListener("click", () => showView(btn.dataset.view));
     });
+
+    /* ---------- Blog functionality ---------- */
+    function renderBlogCards() {
+      const container = document.getElementById("blogContainer");
+      container.innerHTML = ARTICLES.map(article => `
+        <div class="blog-card" onclick="openArticle(${article.id})">
+          <h3>${article.title}</h3>
+          <div class="blog-meta">
+            <span>${article.date}</span>
+            <span>${article.category}</span>
+          </div>
+          <p>${article.excerpt}</p>
+          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle(${article.id});">Read More →</a>
+        </div>
+      `).join("");
+    }
+
+    function openArticle(id) {
+      const article = ARTICLES.find(a => a.id === id);
+      if (!article) return;
+
+      document.getElementById("modalTitle").textContent = article.title;
+      document.getElementById("modalMeta").innerHTML = `
+        <span>${article.date}</span>
+        <span>${article.category}</span>
+      `;
+      document.getElementById("modalBody").innerHTML = article.content;
+      document.getElementById("blogModal").classList.add("show");
+    }
+
+    function closeArticle() {
+      document.getElementById("blogModal").classList.remove("show");
+    }
+
+    document.getElementById("closeModal").addEventListener("click", closeArticle);
+    document.getElementById("blogModal").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("blogModal")) closeArticle();
+    });
+
+    renderBlogCards();
 
     /* ---------- Calendly widget ---------- */
     const area = document.getElementById("bookingArea");
@@ -343,4 +639,4 @@
     }
   </script>
 </body>
-</html>                                                                                                                                                                                                                                                                                                                                                              
+</html>
