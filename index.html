@@ -122,11 +122,12 @@
 
     /* Home page special background */
     #view-home header {
-      background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAB4AZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWm5ydhYaHiImKkpOUlbaWmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlbaWmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=');
+      background-image: url('bg-liquid-gold.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       position: relative;
+      margin-bottom: 40px;
     }
 
     /* Overlay for readability on home page */
@@ -138,11 +139,16 @@
       right: 0;
       bottom: 0;
       background: rgba(10, 10, 10, 0.75);
-      z-index: -1;
+      z-index: 0;
     }
 
     #view-home header {
       position: relative;
+    }
+
+    #view-home header > * {
+      position: relative;
+      z-index: 1;
     }
 
     .photo {
@@ -504,6 +510,9 @@
       .page-head { padding: 40px 0 20px; }
       .page-head h1 { font-size: 1.8rem; }
       .skills { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      #view-home header {
+        background-attachment: scroll;
+      }
     }
 
     @media (max-width: 480px) {
@@ -518,6 +527,9 @@
       .modal-content { width: 95%; padding: 24px; }
       .modal h2 { font-size: 1.4rem; }
       .skills { grid-template-columns: 1fr; }
+      #view-home header {
+        background-attachment: scroll;
+      }
     }
 
     /* Scrollbar styling */
