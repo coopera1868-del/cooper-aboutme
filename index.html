@@ -120,35 +120,41 @@
       margin-bottom: 40px;
     }
 
-    /* Home page special background */
-    #view-home header {
+    /* Home page special full-screen background */
+    #view-home {
       background-image: url('bg-liquid-gold.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
-      position: relative;
-      margin-bottom: 40px;
+      background-repeat: no-repeat;
+      min-height: 100vh;
     }
 
-    /* Overlay for readability on home page */
-    #view-home header::before {
+    #view-home::before {
       content: '';
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       background: rgba(10, 10, 10, 0.75);
-      z-index: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    #view-home {
+      position: relative;
+      z-index: 1;
     }
 
     #view-home header {
-      position: relative;
+      border-bottom: none;
+      background: transparent;
     }
 
     #view-home header > * {
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .photo {
@@ -168,7 +174,7 @@
       box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
       transition: transform 0.3s ease;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
     .photo:hover {
       transform: scale(1.02);
@@ -181,7 +187,7 @@
       text-transform: uppercase;
       margin-bottom: 24px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
     .tagline {
       color: var(--accent-light);
@@ -191,7 +197,7 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
     .location {
       color: var(--muted);
@@ -199,7 +205,7 @@
       margin-top: 8px;
       letter-spacing: 0.02em;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     /* ---------- Skills Display (Home Page) ---------- */
@@ -208,7 +214,7 @@
       padding-top: 40px;
       border-top: 1px solid var(--border);
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
     .home-skills h2 {
       font-size: 0.9rem;
@@ -503,6 +509,11 @@
       letter-spacing: 0.02em;
     }
 
+    #view-home footer {
+      position: relative;
+      z-index: 2;
+    }
+
     @media (max-width: 768px) {
       h1 { font-size: 2.2rem; }
       .nav-inner { padding: 14px 18px; }
@@ -510,7 +521,7 @@
       .page-head { padding: 40px 0 20px; }
       .page-head h1 { font-size: 1.8rem; }
       .skills { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-      #view-home header {
+      #view-home {
         background-attachment: scroll;
       }
     }
@@ -527,7 +538,7 @@
       .modal-content { width: 95%; padding: 24px; }
       .modal h2 { font-size: 1.4rem; }
       .skills { grid-template-columns: 1fr; }
-      #view-home header {
+      #view-home {
         background-attachment: scroll;
       }
     }
