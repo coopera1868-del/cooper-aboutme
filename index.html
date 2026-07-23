@@ -119,6 +119,32 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 40px;
     }
+
+    /* Home page special background */
+    #view-home header {
+      background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAB4AZADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWm5ydhYaHiImKkpOUlbaWmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlbaWmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    /* Overlay for readability on home page */
+    #view-home header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 10, 0.75);
+      z-index: -1;
+    }
+
+    #view-home header {
+      position: relative;
+    }
+
     .photo {
       width: 160px;
       height: 160px;
@@ -135,6 +161,8 @@
       overflow: hidden;
       box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
       transition: transform 0.3s ease;
+      position: relative;
+      z-index: 1;
     }
     .photo:hover {
       transform: scale(1.02);
@@ -146,6 +174,8 @@
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
     }
     .tagline {
       color: var(--accent-light);
@@ -154,12 +184,16 @@
       margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
+      position: relative;
+      z-index: 1;
     }
     .location {
       color: var(--muted);
       font-size: 1rem;
       margin-top: 8px;
       letter-spacing: 0.02em;
+      position: relative;
+      z-index: 1;
     }
 
     /* ---------- Skills Display (Home Page) ---------- */
@@ -167,6 +201,8 @@
       margin-top: 48px;
       padding-top: 40px;
       border-top: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
     }
     .home-skills h2 {
       font-size: 0.9rem;
