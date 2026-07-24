@@ -946,6 +946,9 @@
     function showView(name) {
       views.forEach(v => v.classList.toggle("active", v.id === "view-" + name));
       navButtons.forEach(b => b.classList.toggle("active", b.dataset.view === name));
+      if (name === "certifications") {
+        renderCertifications();
+      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -954,17 +957,45 @@
     });
 
     /* ---------- Certification functionality ---------- */
+    let certificationsLoaded = false;
+    let certificationsLoadFailed = false;
+    let certificationsLoadingPromise = null;
+
     function renderCertifications() {
       const container = document.getElementById("certContainer");
-      container.innerHTML = CERTIFICATIONS.map(cert => `
-        <div class="cert-card">
-          <h3>${cert.title}</h3>
-          <div class="cert-issuer">${cert.issuer}</div>
-          <div class="cert-date">${cert.date}</div>
-          <p>${cert.description}</p>
-          <a href="${cert.link}" target="_blank" rel="noopener" class="cert-link">View Certificate →</a>
-        </div>
-      `).join("");
+      if (!container) {
+        console.error("Missing certifications container");
+        return Promise.resolve();
+      }
+      if (certificationsLoaded || certificationsLoadFailed) return Promise.resolve();
+      if (certificationsLoadingPromise) return certificationsLoadingPromise;
+
+      certificationsLoadingPromise = fetch("certifications.html")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to load certifications.html (${response.status})`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          container.innerHTML = html;
+          certificationsLoaded = true;
+        })
+        .catch(error => {
+          console.error(error);
+          container.innerHTML = `
+            <div class="cert-card">
+              <h3>Unable to load certifications</h3>
+              <p>Please refresh the page and try again.</p>
+            </div>
+          `;
+          certificationsLoadFailed = true;
+        })
+        .finally(() => {
+          certificationsLoadingPromise = null;
+        });
+
+      return certificationsLoadingPromise;
     }
 
     /* ---------- Blog functionality ---------- */
@@ -1006,7 +1037,6 @@
     });
 
     renderBlogCards();
-    renderCertifications();
 
     /* ---------- Calendly widget ---------- */
     const area = document.getElementById("bookingArea");
